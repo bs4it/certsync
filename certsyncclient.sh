@@ -14,6 +14,7 @@ do
   if ! [ $tgt_sha256 == $src_sha256 ]; then
     echo "Cert for $domain has changed."
     certchanged=1
+    mkdir -p /etc/ssl/private/$domain/
     scp certsync@$host:$home/certs/$domain/privkey.pem /etc/ssl/private/$domain/privkey.pem
     scp certsync@$host:$home/certs/$domain/fullchain.pem /etc/ssl/private/$domain/fullchain.pem
     chown -R root:root /etc/ssl/private/$domain/*

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-domains="bs4it.com.br"
+domains=$(dirname "$0")
 
 for domain in $domains;
 do
   src_sha256=$(sha256sum /etc/letsencrypt/live/$domain/privkey.pem | awk '{print $1}')
   tgt_sha256=$(sha256sum /home/certsync/certs/$domain/privkey.pem | awk '{print $1}')
-  if ! [ $tgt_sha256 == $src_sha256 ]; then
+  if ! [ $tgt_sha256 -eq $src_sha256 ]; then
     echo "Cert has changed."
     mkdir -p /home/certsync/certs/$domain
     cp /etc/letsencrypt/live/$domain/privkey.pem /home/certsync/certs/$domain/privkey.pem

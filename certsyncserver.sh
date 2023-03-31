@@ -16,7 +16,7 @@ do
     mkdir -p /home/certsync/certs/$domain
     cp /etc/letsencrypt/live/$domain/privkey.pem /home/certsync/certs/$domain/privkey.pem
     cp /etc/letsencrypt/live/$domain/fullchain.pem /home/certsync/certs/$domain/fullchain.pem
-    openssl pkcs12 -export -in /home/certsync/certs/$domain/fullchain.pem -inkey /home/certsync/certs/$domain/privkey.pem -out /home/certsync/certs/$domain/cert_combined.pfx -password pass:ju5u6hxi
+    openssl pkcs12 -export -in /home/certsync/certs/$domain/fullchain.pem -inkey /home/certsync/certs/$domain/privkey.pem -out /home/certsync/certs/$domain/cert_combined.pfx -password pass:imp0rtp455
     sha256sum /home/certsync/certs/$domain/privkey.pem | awk '{print $1}' > /home/certsync/certs/$domain/sha256sum
     chown -R certsync:certsync /home/certsync/certs/$domain/*
   else

@@ -1,9 +1,15 @@
 #!/bin/bash
 
-domains="bs4it.com.br"
 services="haproxy.service sshd.service"
 host="172.24.0.26"
 user="certsync"
+
+if ! [ -f /opt/bs4it/certsync/domains.conf ]; then
+  echo "File '/opt/bs4it/certsync/domains.conf' not found. Creating it."
+  touch /opt/bs4it/certsync/domains.conf
+fi
+# read domain list from file
+read -d $'\x04' domains < /opt/bs4it/certsync/domains.conf
 
 certchanged=0
 for domain in $domains;

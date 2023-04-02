@@ -13,14 +13,14 @@ if ( -Not (Test-Path -Path $scriptPath\domains.conf -PathType Leaf )) {
 $domains = Get-Content $scriptPath\domains.conf
 $certchanged = 0
 $domains | ForEach-Object {
-    $remotehome = ssh -i c:\opt\bs4it\ssh\certsync_id_ed25519 $user@$server printenv HOME
-    $src_sha256 = ssh -i c:\opt\bs4it\ssh\certsync_id_ed25519 $user@$server sha256sum $remotehome/certs/$_/cert_combined.pfx
+    $remotehome = ssh -i $scriptPath\..\ssh\certsync_id_ed25519 $user@$server printenv HOME
+    $src_sha256 = ssh -i $scriptPath\..\ssh\certsync_id_ed25519 $user@$server sha256sum $remotehome/certs/$_/cert_combined.pfx
     $tgt_sha256 = ((Get-FileHash -ErrorAction SilentlyContinue -Algorithm SHA256 -Path $scriptPath\..\certs\$_\cert_combined.pfx).Hash).Tolower()
     if ( $tgt_sha256 -ne $src_sha256 ) {
         Write-Host "Cert for $domain has changed."
         $certchanged = 1
-        New-Item -ItemType Directory $scriptPath\..\certs\$_
-        scp certsync@${server}:${remotehome}/certs/$domain/cert_combined.pfx $scriptPath\..\certs\$_\cert_combined.pfx
+        New-Item -Force -ItemType Directory $scriptPath\..\certs\$_
+        scp -i $scriptPath\..\ssh\certsync_id_ed25519 certsync@${server}:${remotehome}/certs/$domain/cert_combined.pfx $scriptPath\..\certs\$_\cert_combined.pfx
     }
 }
 

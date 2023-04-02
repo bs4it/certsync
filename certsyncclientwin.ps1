@@ -14,7 +14,7 @@ $domains = Get-Content $scriptPath\domains.conf
 
 $domains | ForEach-Object {
     $remotehome = ssh -i c:\opt\bs4it\ssh\certsync_id_ed25519 $user@$server printenv HOME
-    $src_sha256 = ssh -i c:\opt\bs4it\ssh\certsync_id_ed25519 $user@$server cat $remotehome/certs/$_/sha256sum
+    $src_sha256 = ssh -i c:\opt\bs4it\ssh\certsync_id_ed25519 $user@$server sha256sum $remotehome/certs/$_/cert_combined.pfx
     $tgt_sha256 = ((Get-FileHash -Algorithm SHA256 -Path $scriptPath\..\certs\$_\cert_combined.pfx).Hash).Tolower()
     Write-Host $src_sha256
     Write-Host $tgt_sha256

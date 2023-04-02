@@ -20,16 +20,16 @@ $domains | ForEach-Object {
         Write-Host "Cert for $domain has changed."
         $certchanged = 1
         New-Item -ItemType Directory $scriptPath\..\certs\$_
-        scp certsync@$server:$remotehome/certs/$domain/cert_combined.pfx $scriptPath\..\certs\$_\cert_combined.pfx
+        scp certsync@${server}:${remotehome}/certs/$domain/cert_combined.pfx $scriptPath\..\certs\$_\cert_combined.pfx
     }
 }
 
-if ( $certchanged -eq 1 ) {
-    Write-Host "Deploy Cerificate..."
-    for service in $services;
-    do
-    echo Issuing restart command to $service
-    /usr/bin/systemctl restart $service
-    done
-}
+# if ( $certchanged -eq 1 ) {
+#     Write-Host "Deploy Cerificate..."
+#     for service in $services;
+#     do
+#     echo Issuing restart command to $service
+#     /usr/bin/systemctl restart $service
+#     done
+# }
   
